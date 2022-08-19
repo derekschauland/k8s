@@ -7,7 +7,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "running something in cloud run - just a message change")
+	fmt.Fprintln(w, "running something in cloud run - just a message change - and again")
 }
 
 func main() {
