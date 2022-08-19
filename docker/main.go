@@ -7,7 +7,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello, Let's Learn Kubernetes - from a folder, called Docker in GCP Cloud Run")
+	fmt.Fprintln(w, "running something in cloud run - just a message change")
 }
 
 func main() {
