@@ -1,0 +1,104 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: appgw-ingress
+  annotations: 
+    kubernetes.io/ingress.class: azure/application-gateway
+  
+  labels:
+    name: appgw-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: vote-front-svc
+            port:
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-back
+  template:
+    metadata:
+      labels:
+        app: vote-back
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: vote-back
+        image: mcr.microsoft.com/oss/bitnami/redis:6.0.8
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "yes"
+        ports:
+        - containerPort: 6379
+          name: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote-back-svc
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: vote-back
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-front
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: vote-front
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: vote-front
+        image: mcr.microsoft.com/azuredocs/azure-vote-front:v1
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+        env:
+        - name: REDIS
+          value: "vote-back-svc"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote-front-svc
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: vote-front

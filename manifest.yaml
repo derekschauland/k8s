@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-appgw
+spec:
+  selector:
+    app: demo
+  ports:
+  - port: 80
+    targetPort: 80
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: appgw-ingress
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    
+
+  labels:
+    name: appgw-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: test-appgw
+            port: 
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: demo
+        image: acrcentralus.azurecr.io/derekhello:d0430da12b502bf55ace23790b434cf3e6511358
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
