@@ -7,8 +7,8 @@ resource "azurerm_kubernetes_cluster" "this" {
 
   automatic_channel_upgrade = "stable"
   azure_active_directory_role_based_access_control {
-    managed = true
-    azure_rbac_enabled = true
+    managed                = true
+    azure_rbac_enabled     = true
     admin_group_object_ids = [azuread_group.this.object_id]
   }
 
@@ -46,7 +46,7 @@ resource "azurerm_kubernetes_cluster" "this" {
 }
 
 resource "azuread_group" "this" {
-    display_name = "k8s_admins"
-    owners = [data.azuread_client_config.current.object_id]
-    security_enabled = true
+  display_name     = "k8s_admins"
+  owners           = [data.azuread_client_config.current.object_id]
+  security_enabled = true
 }
