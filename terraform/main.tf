@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">=3.0.0"
     }
+    azuread = {
+      source = "hashicorp/azuread"
+      version = "~> 2.27.0"
+    }
   }
   backend "remote" {
     organization = "derek2-training"
@@ -20,6 +24,10 @@ provider "azurerm" {
     }
   }
 
+}
+
+provider "azuread" {
+  tenant = "c9e98357-d330-4626-b83e-b252cfe54eb9"
 }
 
 locals {
@@ -44,3 +52,4 @@ resource "azurerm_resource_group" "this" {
 }
 
 data "azurerm_client_config" "current" {}
+data "azuread_client_config" "current" {}
