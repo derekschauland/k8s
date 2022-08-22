@@ -52,7 +52,7 @@ resource "azuread_group" "this" {
 }
 
 data "azuread_user" "user" {
-  user_principal_name = "derekschauland@outlook.com"
+  user_principal_name = "derekschauland_outlook.com#EXT#@derekschaulandoutlook.onmicrosoft.com"
 }
 
 resource "azuread_group_member" "this" {
