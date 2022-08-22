@@ -50,3 +50,13 @@ resource "azuread_group" "this" {
   owners           = [data.azuread_client_config.current.object_id]
   security_enabled = true
 }
+
+data "azuread_user" "user" {
+  user_principal_name = "derekschauland@outlook.com"
+}
+
+resource "azuread_group_member" "this" {
+  group_object_id  = azuread_group.this.object_id
+  member_object_id = data.azuread_user.user.id
+
+}
