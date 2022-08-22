@@ -8,7 +8,7 @@ terraform {
   backend "remote" {
     organization = "derek2-training"
     workspaces {
-      name = "tf-aks-2"
+      name = "tf-aks-3"
     }
   }
 }
