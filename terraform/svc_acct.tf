@@ -30,4 +30,5 @@ resource "azurerm_key_vault_secret" "appid" {
 resource "azurerm_key_vault_secret" "pass" {
   name = "${azuread_application.app.display_name}-app-secret"
   value = azuread_service_principal_password.sp.value
+  key_vault_id = azurerm_key_vault.this.id
 }
