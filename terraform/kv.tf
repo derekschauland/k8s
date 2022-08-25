@@ -7,7 +7,7 @@ resource "azurerm_key_vault" "this" {
 
 
   access_policy {
-    object_id = data.azuread_client_config.current.object_id #"9ad75dee-6105-4ffd-9c88-8255904692c0"
+    object_id = "9ad75dee-6105-4ffd-9c88-8255904692c0"
     tenant_id = data.azurerm_client_config.current.tenant_id
 
     secret_permissions = [
