@@ -15,7 +15,7 @@ resource "time_rotating" "spin" {
 
 
 resource "azuread_service_principal_password" "sp" {
-  service_principal_id = azuread_application.app.id
+  service_principal_id = azuread_service_principal.sp.object_id
   rotate_when_changed = {
     "rotation" = time_rotating.spin.id
   }
