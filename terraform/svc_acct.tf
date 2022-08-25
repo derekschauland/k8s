@@ -1,5 +1,5 @@
 resource "azuread_application" "app" {
-  display_name = "test-app"
+  display_name = "test-application"
   owners = [data.azuread_client_config.current.object_id]
 }
 
