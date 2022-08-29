@@ -1,3 +1,3 @@
-environment = "dev3"
+environment = "dev"
 owner       = "derek"
-namespace   = "test-aks-3"
+namespace   = "test-aks-2"
